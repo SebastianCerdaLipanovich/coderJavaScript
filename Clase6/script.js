@@ -4,91 +4,104 @@ class Alumno {
         this.nombre = nombre;
         this.apellido = apellido;
         this.carrera = carrera;
+        this.notas = [];
 
-        this.presentarse = () => {
-            alert(`Hola soy ${nombre} ${apellido} y estoy estudiando ${carrera}`);
+        this.agregarNota = (examen) => {
+            this.notas.push(examen);
         };
-    }
-}
 
-const crearAlumno = () => {
-    let nombre = prompt("Cual es tu nombre?");
-    let apellido = prompt("Cual es tu apellido?");
-    let carrera = prompt("Que carrera estas cursando?");
+        this.sacarPromedioGeneral = () => {
+            if (this.notas.length === 0) {
+                return 0;
+            } else {
+                let sumaNotas = 0;
+                this.notas.forEach(examen => {
+                    sumaNotas += examen.nota;
+                });
+                return Math.round((sumaNotas / this.notas.length + Number.EPSILON) * 100) / 100;
+            }
 
-    return new Alumno(nombre, apellido, carrera);
-}
+        }
 
-function pedirNota() {
-    let ingreso = prompt(`Ingresa tu ${cantidadNotas + 1} nota:`);
-    while (!esCalcular(ingreso) && (!esValido(ingreso))) {
-        alert("INGRESO NO VALIDO \nIntente de nuevo");
-        ingreso = prompt(`Ingresa tu ${cantidadNotas + 1} nota:`);
-    }
-    if (esCalcular(ingreso)) {
-        return ingreso
-    } else {
-        ingreso = parseFloat(ingreso);
-        return Math.round((ingreso + Number.EPSILON) * 100) / 100;
+        this.mostrarMateriasOrdenadas = (orden) => {
+            let listaMaterias = [];
+            switch (orden) {
+                case "a":
+                    this.notas.sort((a, b) => (a.materia < b.materia) ? 1 : ((b.materia < a.materia) ? -1 : 0));
+                    this.notas.forEach(examen => {
+                        if (listaMaterias.indexOf(examen.materia) == -1) {
+                            listaMaterias.push(examen.materia);
+                        }
+                    });
+                    alert("Mostrando tus materias en forma ascendente:\n" + listaMaterias.join(`\n`));
+                    break;
+                case "b":
+                    this.notas.sort((a, b) => (a.materia > b.materia) ? 1 : ((b.materia > a.materia) ? -1 : 0));
+                    this.notas.forEach(examen => {
+                        if (listaMaterias.indexOf(examen.materia) == -1) {
+                            listaMaterias.push(examen.materia);
+                        }
+                    });
+                    alert("Mostrando tus materias en forma descendente:\n" + listaMaterias.join(`\n`));
+                    break;
+            }
+        }
     }
 };
+class Examen {
+    constructor(materia, nota) {
+        this.materia = materia;
+        this.nota = nota;
+    };
+};
+function crearAlumno() {
+    let nombre = prompt("Cual es tu nombre?").toUpperCase();
+    let apellido = prompt("Cual es tu apellido?").toUpperCase();
+    let carrera = prompt("Que carrera estas cursando?").toUpperCase();
 
-function sacarPromedio() {
-    return Math.round((sumaNotas / cantidadNotas + Number.EPSILON) * 100) / 100;
-}
+    return new Alumno(nombre, apellido, carrera);
+};
+function crearExamen() {
+    let materia = prompt("A que materia pertenece este examen?").toUpperCase();
+    let nota = pedirNota(materia);
 
-function esCalcular(ingreso) {
-    return ingreso == "Calcular" || ingreso == "calcular" || ingreso == "CALCULAR"
-}
-
+    return new Examen(materia, nota);
+};
+function pedirNota(materia) {
+    let ingreso = prompt(`Cual fue la nota del examen de ${materia}?`);
+    while (!esValido(ingreso)) {
+        alert("INGRESO NO VALIDO \nIntente de nuevo");
+        ingreso = prompt(`Cual fue la nota del examen de ${materia}?`);
+    }
+    ingreso = parseFloat(ingreso);
+    return Math.round((ingreso + Number.EPSILON) * 100) / 100;
+};
+function esContinuar(ingreso) {
+    while (ingreso != "N" && ingreso != "Y") {
+        alert("INGRESO NO VALIDO \nIntente de nuevo");
+        ingreso = prompt("Deseas continuar? Y/N").toUpperCase();
+    }
+    if (ingreso === "Y") {
+        return true;
+    } else if (ingreso === "N") {
+        return false;
+    }
+};
 function esValido(ingreso) {
     return !(isNaN(parseFloat(ingreso)) || parseFloat(ingreso) > 10 || parseFloat(ingreso) < 0);
-}
+};
 
-function mostrarNotasOrdenadas(orden) {
-    switch (orden) {
-        case "a":
-            notas.sort(function (a, b) { return a - b });
-            alert("Mostrando tus notas en forma ascendente:\n" + notas.join(`\n`));
-            break;
-        case "b":
-            alert("Mostrando tus notas en forma descendente:\n" + notas.sort(function (a, b) { return b - a }).join(`\n`));
-            break;
-        case "c":
-            alert("Mostrando tus notas en la forma en que fueron ingresadas:\n" + notas.join(`\n`));
-            break;
-    }
-}
-
-//Ingresa todas tus notas
-let cantidadNotas = 0;
-let sumaNotas = 0;
-let notaAlta = 0;
-let notaBaja = 0;
 let alumno = crearAlumno();
-let notas = [];
-console.log(alumno);
-alert(`Hola ${alumno.nombre}, voy a pedirte que vayas ingresando todas tus notas.
-cuando hayas terminado de ingresarlas escribre CALCULAR`)
-notaIngresada = pedirNota()
-notaBaja = notaIngresada;
-while (!esCalcular(notaIngresada)) {
-    cantidadNotas++;
-    notas.push(notaIngresada);
-    sumaNotas += notaIngresada;
-    if (notaIngresada > notaAlta) notaAlta = notaIngresada;
-    if (notaIngresada < notaBaja) notaBaja = notaIngresada;
-    notaIngresada = pedirNota();
+alert(`Hola ${alumno.nombre}, voy a pedirte que vayas ingresando todas tus notas aclarando materia y nota`);
+alumno.agregarNota(crearExamen());
+let continuar = esContinuar(prompt("Deseas continuar? Y/N").toUpperCase());
+while (continuar) {
+    alumno.agregarNota(crearExamen());
+    continuar = esContinuar(prompt("Deseas continuar? Y/N").toUpperCase());
 }
-if (cantidadNotas > 0) {
-    let promedio = sacarPromedio();
-    alumno.presentarse();
-    alert(`Bueno ${alumno.nombre}, estos son tus resultados: \ningresaste ${cantidadNotas} notas y \ntu promedio es: ${promedio} \ntu nota mas alta fue un ${notaAlta} \ntu nota mas baja un ${notaBaja}`);
-    let orden = prompt(`${alumno.nombre}, Como deseas ver tus notas? \nA)Forma ascendente\nB)Forma descendete\nC)En el orden que fue ingresado`).toLocaleLowerCase();
-    while(orden!="a" && orden!="b" && orden!="c"){
-        orden = prompt(`INGRESO INCORRECTO \n${alumno.nombre}, Como deseas ver tus notas? \nA)Forma ascendente\nB)Forma descendete\nC)En el orden que fue ingresado`).toLocaleLowerCase();
-    }
-    mostrarNotasOrdenadas(orden);
-} else {
-    alert(`${alumno.nombre} no ingresaste ninguna nota. \npresiona F5 para reiniciar el programa`)
+alert(`${alumno.nombre} tu promedio es:` + alumno.sacarPromedioGeneral());
+let orden = prompt(`${alumno.nombre}, Como deseas ver tus materias? \nA)Forma ascendente\nB)Forma descendete`).toLocaleLowerCase();
+while (orden != "a" && orden != "b") {
+    orden = prompt(`INGRESO INCORRECTO \n${alumno.nombre}, Como deseas ver tus materias? \nA)Forma ascendente\nB)Forma descendete`).toLocaleLowerCase();
 }
+alumno.mostrarMateriasOrdenadas(orden);
