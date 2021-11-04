@@ -99,6 +99,21 @@ let listaAlumnos = [];
 /******************************************************
  *          EVENTOS
  ******************************************************/
+if((localStorage.getItem('alumno'))&&(document.getElementById("btnCrearAlumno"))){
+    let alumno = new Alumno(JSON.parse(localStorage.getItem('alumno')).nombre, JSON.parse(localStorage.getItem('alumno')).apellido, JSON.parse(localStorage.getItem('alumno')).carrera, JSON.parse(localStorage.getItem('alumno')).notas)
+    document.getElementById("nombreInput").value = alumno.nombre;
+    document.getElementById("nombreInput").setAttribute("disabled", true);
+    document.getElementById("apellidoInput").value = alumno.apellido;
+    document.getElementById("apellidoInput").setAttribute("disabled", true);
+    document.getElementById("carreraInput").value = alumno.carrera;
+    document.getElementById("carreraInput").setAttribute("disabled", true);
+    document.getElementById("mensajeLogin").innerHTML = `Continua ingresando examenes para este alumno o <a id="cierraSesion" href="#">cierra sesion</a>`
+    document.getElementById("btnCrearAlumno").innerHTML = "Ingresar Examen"
+    document.getElementById("cierraSesion").onclick = () => {
+        localStorage.removeItem("alumno");
+        location.reload();
+    }
+};
 
 if (document.getElementById("btnCrearAlumno")) {
     document.getElementById("btnCrearAlumno").onclick = () => {
@@ -111,9 +126,9 @@ if (document.getElementById("btnCrearAlumno")) {
     };
 };
 
-if (document.getElementById('nombreAlumnoActivo')) {
+if (document.getElementById('mensajeNotas')) {
     let alumno = new Alumno(JSON.parse(localStorage.getItem('alumno')).nombre, JSON.parse(localStorage.getItem('alumno')).apellido, JSON.parse(localStorage.getItem('alumno')).carrera, JSON.parse(localStorage.getItem('alumno')).notas);
-    document.getElementById('nombreAlumnoActivo').innerHTML = alumno.nombre + " " + alumno.apellido;
+    document.getElementById('mensajeNotas').innerHTML = `Ingresando nuevo examen para ${alumno.nombre} ${alumno.apellido}`;
 };
 
 if (document.getElementById("btnCrearExamen")) {
