@@ -99,7 +99,7 @@ let listaAlumnos = [];
 /******************************************************
  *          EVENTOS
  ******************************************************/
-if((localStorage.getItem('alumno'))&&(document.getElementById("btnCrearAlumno"))){
+if ((localStorage.getItem('alumno')) && (document.getElementById("btnCrearAlumno"))) {
     let alumno = new Alumno(JSON.parse(localStorage.getItem('alumno')).nombre, JSON.parse(localStorage.getItem('alumno')).apellido, JSON.parse(localStorage.getItem('alumno')).carrera, JSON.parse(localStorage.getItem('alumno')).notas)
     document.getElementById("nombreInput").value = alumno.nombre;
     document.getElementById("nombreInput").setAttribute("disabled", true);
@@ -137,13 +137,15 @@ if (document.getElementById("btnCrearExamen")) {
         let nota = document.getElementById("notaInput").value;
         if (localStorage.getItem('alumno')) {
             let alumno = new Alumno(JSON.parse(localStorage.getItem('alumno')).nombre, JSON.parse(localStorage.getItem('alumno')).apellido, JSON.parse(localStorage.getItem('alumno')).carrera, JSON.parse(localStorage.getItem('alumno')).notas);
-            alumno.agregarNota(new Examen(materia, nota));
-            localStorage.setItem('alumno', JSON.stringify(alumno));
+            if (esValido(nota)) {
+                alumno.agregarNota(new Examen(materia, nota));
+                localStorage.setItem('alumno', JSON.stringify(alumno));
+            }
         }
     };
 };
 
-if(document.getElementById("examenesTable")){
+if (document.getElementById("examenesTable")) {
     let alumno = new Alumno(JSON.parse(localStorage.getItem('alumno')).nombre, JSON.parse(localStorage.getItem('alumno')).apellido, JSON.parse(localStorage.getItem('alumno')).carrera, JSON.parse(localStorage.getItem('alumno')).notas);
     let examenesTable = document.getElementById("examenesTable");
     for (const examen of alumno.notas) {
@@ -159,43 +161,43 @@ if(document.getElementById("examenesTable")){
         }
         examenesTable.appendChild(tr);
     }
-    
+
 };
 
 function genera_tabla() {
     // Obtener la referencia del elemento body
     var body = document.getElementsByTagName("body")[0];
-  
+
     // Crea un elemento <table> y un elemento <tbody>
-    var tabla   = document.createElement("table");
+    var tabla = document.createElement("table");
     var tblBody = document.createElement("tbody");
-  
+
     // Crea las celdas
     for (var i = 0; i < 2; i++) {
-      // Crea las hileras de la tabla
-      var hilera = document.createElement("tr");
-  
-      for (var j = 0; j < 2; j++) {
-        // Crea un elemento <td> y un nodo de texto, haz que el nodo de
-        // texto sea el contenido de <td>, ubica el elemento <td> al final
-        // de la hilera de la tabla
-        var celda = document.createElement("td");
-        var textoCelda = document.createTextNode("celda en la hilera "+i+", columna "+j);
-        celda.appendChild(textoCelda);
-        hilera.appendChild(celda);
-      }
-  
-      // agrega la hilera al final de la tabla (al final del elemento tblbody)
-      tblBody.appendChild(hilera);
+        // Crea las hileras de la tabla
+        var hilera = document.createElement("tr");
+
+        for (var j = 0; j < 2; j++) {
+            // Crea un elemento <td> y un nodo de texto, haz que el nodo de
+            // texto sea el contenido de <td>, ubica el elemento <td> al final
+            // de la hilera de la tabla
+            var celda = document.createElement("td");
+            var textoCelda = document.createTextNode("celda en la hilera " + i + ", columna " + j);
+            celda.appendChild(textoCelda);
+            hilera.appendChild(celda);
+        }
+
+        // agrega la hilera al final de la tabla (al final del elemento tblbody)
+        tblBody.appendChild(hilera);
     }
-  
+
     // posiciona el <tbody> debajo del elemento <table>
     tabla.appendChild(tblBody);
     // appends <table> into <body>
     body.appendChild(tabla);
     // modifica el atributo "border" de la tabla y lo fija a "2";
     tabla.setAttribute("border", "2");
-  }
+}
 /* let alumno;
 if (localStorage.getItem('alumno')) {
     let storageAlumno = localStorage.getItem('alumno');
