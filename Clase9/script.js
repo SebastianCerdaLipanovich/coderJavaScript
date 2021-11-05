@@ -109,10 +109,11 @@ if ((localStorage.getItem('alumno')) && (document.getElementById("btnCrearAlumno
     document.getElementById("carreraInput").setAttribute("disabled", true);
     document.getElementById("mensajeLogin").innerHTML = `Continua ingresando examenes para este alumno o <a id="cierraSesion" href="#">cierra sesion</a>`
     document.getElementById("btnCrearAlumno").innerHTML = "Ingresar Examen"
+    document.getElementById("btnCrearAlumno").setAttribute("type","button");
     document.getElementById("cierraSesion").onclick = () => {
         localStorage.removeItem("alumno");
         location.reload();
-    }
+    };
 };
 
 if (document.getElementById("btnCrearAlumno")) {
@@ -121,8 +122,11 @@ if (document.getElementById("btnCrearAlumno")) {
         let apellido = document.getElementById("apellidoInput").value.toUpperCase();
         let carrera = document.getElementById("carreraInput").value.toUpperCase();
 
-        localStorage.setItem('alumno', JSON.stringify(new Alumno(nombre, apellido, carrera)));
-        location.href = "../Clase9/views/examenes.html";
+        if (nombre && apellido && carrera) {
+            localStorage.setItem('alumno', JSON.stringify(new Alumno(nombre, apellido, carrera)));
+            document.getElementById("btnCrearAlumno").setAttribute("type","button");
+            location.href = "../Clase9/views/examenes.html";
+        };
     };
 };
 
@@ -140,8 +144,8 @@ if (document.getElementById("btnCrearExamen")) {
             if (esValido(nota)) {
                 alumno.agregarNota(new Examen(materia, nota));
                 localStorage.setItem('alumno', JSON.stringify(alumno));
-            }
-        }
+            };
+        };
     };
 };
 
@@ -157,10 +161,10 @@ if (document.getElementById("examenesTable")) {
                 let tdText = document.createTextNode(`${element}`);
                 td.appendChild(tdText);
                 tr.appendChild(td);
-            }
-        }
+            };
+        };
         examenesTable.appendChild(tr);
-    }
+    };
 
 };
 
