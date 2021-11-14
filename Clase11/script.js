@@ -77,8 +77,10 @@ function esContinuar(ingreso) {
     }
 };
 function esValido(ingreso) {
-    return (ingreso == 0 || ingreso == 1 || ingreso == 2 || ingreso == 3 || ingreso == 4 || ingreso == 5 || ingreso == 6 || ingreso == 7 || ingreso == 8 || ingreso == 9 || ingreso == 10);
+    return (ingreso >= 0 && ingreso <=10 && regexp.test(ingreso));
 };
+
+var regexp = /^\d+(\.\d{1,2})?$/;
 
 /******************************************************
  *          VARIABLES
