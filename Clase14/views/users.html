@@ -11,35 +11,16 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 
-<body>
+<body style="display: none;">
     <div class="col-md-10 mx-auto col-lg-5">
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Examenes</li>
+                <li class="breadcrumb-item active" aria-current="page">Users</li>
             </ol>
         </nav>
-        <form class="p-4 p-md-5 border rounded-3 bg-light">
-
-            <small id="mensajeNotas" class="text-muted"></small>
-            <hr class="my-4">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="materiaInput" placeholder="materia" required>
-                <label for="materiaInput">Materia</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="number" step="0.01" class="form-control" id="notaInput" placeholder="nota" min=0 max=10
-                    required>
-                <label for="notaInput">Nota</label>
-            </div>
-            <button id="btnCrearExamen" class="w-100 btn btn-lg btn-primary" type="submit">Ingresar</button>
-        </form>
-        <table class="table" id="examenesTable">
-            <tr>
-                <th>Materia</th>
-                <th>Nota</th>
-            </tr>
-        </table>
+    </div>
+    <div id="usersList">
     </div>
     <div class="container">
         <footer class="py-3 my-4">
