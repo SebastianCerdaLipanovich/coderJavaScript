@@ -22,7 +22,7 @@ class Alumno {
             } else {
                 let sumaNotas = 0;
                 this.notas.forEach(examen => {
-                    sumaNotas += parseInt(examen.nota);
+                    sumaNotas += parseFloat(examen.nota);
                 });
                 return Math.round((sumaNotas / this.notas.length + Number.EPSILON) * 100) / 100;
             }
@@ -163,11 +163,12 @@ $(() => {
                 if (esValido(nota) && materia) {
                     alumno.agregarNota(new Examen(materia, nota));
                     localStorage.setItem('alumno', JSON.stringify(alumno));
+                    $("body").fadeOut(1000, function () {
+                        location.reload();;
+                    });
                 };
             };
-            $("body").fadeOut(1000, function () {
-                location.reload();;
-            });
+          
         };
     };
 
